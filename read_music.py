@@ -15,7 +15,7 @@ def gen_sha256(filepath):
     return sha.hexdigest()
 
 
-def get_raw_data_channels(filepath):
+def get_framerate_and_channels(filepath):
     music_file = AudioSegment.from_file(filepath)
     data = np.fromstring(music_file.raw_data, np.int16)
     channels = []
@@ -23,7 +23,7 @@ def get_raw_data_channels(filepath):
     for channel in range(music_file.channels):
         channels.append(data[channel::music_file.channels])
     print(music_file.frame_rate)
-    return music_file.frame_rate,channels
+    return music_file.frame_rate, channels
 
 
 if __name__ == '__main__':

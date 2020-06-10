@@ -30,10 +30,9 @@ def get_spectrum(sample, freq, n_fft=WIDOW_SIZE, window=mlab.window_hanning,
 
 
 def get_constellation_map(spectrum, plot=False):
-    local_max = ndimage.maximum_filter(spectrum,footprint=get_constellation_map.neighbor) == spectrum
+    local_max = ndimage.maximum_filter(spectrum, footprint=get_constellation_map.neighbor) == spectrum
 
     backgroud = spectrum == 0
-
 
 
 get_constellation_map.struct = ndimage.generate_binary_structure(2, 1)
