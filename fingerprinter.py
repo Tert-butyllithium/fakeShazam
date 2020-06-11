@@ -29,14 +29,47 @@ def get_spectrum(sample, freq, n_fft=WIDOW_SIZE, window=mlab.window_hanning,
     return spectrum
 
 
-def get_constellation_map(spectrum, plot=False):
+def get_constellation_map(spectrum: np.array, plot=False):
+    # algorithm by worldveil: https://github.com/worldveil/dejavu
     local_max = ndimage.maximum_filter(spectrum, footprint=get_constellation_map.neighbor) == spectrum
 
-    backgroud = spectrum == 0
+    background = spectrum == 0
+    eroded_background = ndimage.binary_erosion(background, structure=get_constellation_map.neighbor, border_value=1)
+
+    detected_peaks = local_max != eroded_background
+
+    amps = spectrum[detected_peaks]
+    freqs, times = np.where(detected_peaks)
+
+    amps = amps.flatten()
+    filter_ides = np.where(amps > MIN_PEAK_AMP)
+
+    freqs_filter = freqs[filter_ides]
+    times_filter = times[filter_ides]
+
+    if plot:
+        # scatter of the peaks
+        fig, ax = pyplot.subplots()
+        ax.imshow(spectrum)
+        ax.scatter(times_filter, freqs_filter)
+        ax.set_xlabel('Time')
+        ax.set_ylabel('Frequency')
+        ax.set_title("Spectrogram")
+        pyplot.gca().invert_yaxis()
+        pyplot.show()
+
+    return list(zip(freqs_filter, times_filter))
 
 
 get_constellation_map.struct = ndimage.generate_binary_structure(2, 1)
 get_constellation_map.neighbor = ndimage.iterate_structure(get_constellation_map.struct, PEAK_NEAR_SIZE)
+
+
+def generate_hashes(peak: list[tuple[int, int]]) -> list[tuple[str, int]]:
+    id_freq = 0
+    id_time = 1
+
+    peak
 
 if __name__ == '__main__':
     pass
