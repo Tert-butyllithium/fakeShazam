@@ -2,6 +2,9 @@ from hashlib import sha256
 from pydub import AudioSegment
 import numpy as np
 
+# import from project
+import fingerprint
+
 
 def gen_sha256(filepath):
     blocksize = 1 << 16
@@ -26,5 +29,17 @@ def get_framerate_and_channels(filepath):
     return music_file.frame_rate, channels
 
 
+def get_fingerprint(filepath):
+    res = set()
+    frame_rate, channels = get_framerate_and_channels(filepath)
+    for channel in channels:
+        spectrum = fingerprint.get_spectrum(channel, frame_rate)
+        peaks = fingerprint.get_constellation_map(spectrum)
+        fp = fingerprint.generate_hashes(peaks)
+        res = res.union(fp)
+
+    return res
+
+
 if __name__ == '__main__':
-    pass
+    print(get_fingerprint('C:\\Users\\lanranli\\PycharmProjects\\fakeShazam\\data\\music\\1848.mp3'))
