@@ -1,0 +1,5 @@
+# FakeShazam
+
+## Requirements
+
+- ffmpeg

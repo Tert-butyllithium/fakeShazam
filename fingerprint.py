@@ -29,7 +29,7 @@ def get_spectrum(sample, freq, n_fft=WIDOW_SIZE, window=mlab.window_hanning,
     spectrum[spectrum == 0] = 1
     spectrum = np.log(spectrum)
 
-    print(np.max(spectrum))
+    # print(np.max(spectrum))
     return spectrum
 
 
@@ -37,7 +37,7 @@ def get_constellation_map(spectrum, plot=False) -> List[Tuple[int, int]]:
     # algorithm by worldveil: https://github.com/worldveil/dejavu
     local_max = ndimage.maximum_filter(spectrum, footprint=get_constellation_map.neighbor) == spectrum
 
-    background = spectrum == 0
+    background = (spectrum == 0)
     eroded_background = ndimage.binary_erosion(background, structure=get_constellation_map.neighbor, border_value=1)
 
     detected_peaks = local_max != eroded_background
