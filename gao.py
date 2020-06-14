@@ -3,6 +3,7 @@ import sys, os, pickle
 
 INVERTED_INDEX_FILE = 'data/metadata/inverted_index.meta'
 NAME_DICT_FILE = 'data/metadata/name_dict.meta'
+DEBUG_MODE = False
 
 if __name__ == '__main__':
     args = sys.argv
@@ -10,6 +11,8 @@ if __name__ == '__main__':
         print('usage: gao.py <filename>')
         sys.exit(2)
     filename = sys.argv[1]
+    if len(args) > 2 and args[2] == 'debug':
+        DEBUG_MODE = True
     if not os.path.exists(filename):
         raise FileNotFoundError(filename)
     fingerprint = read_music.get_fingerprint(filename)
@@ -36,3 +39,8 @@ if __name__ == '__main__':
     ans = list(evaluate.keys())
     ans.sort(key=lambda x: evaluate[x], reverse=True)
     print('Best match: ' + dict_name[ans[0][0]])
+
+    if DEBUG_MODE:
+        print('------------DEBUG INFO------------')
+        for i in ans:
+            print(i, evaluate[i])
