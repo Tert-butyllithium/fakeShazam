@@ -141,3 +141,4 @@ cython_debug/
 
 .DS_STORE
 *.mp3
+*.meta

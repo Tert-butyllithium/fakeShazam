@@ -24,7 +24,7 @@ def get_songs(data):
     for i in re.findall(r'<a href="/song\?id=(\d+)">(.*?)</a>', res.text):
         download_url = "http://music.163.com/song/media/outer/url?id=%s" % i[0]
         try:
-            with open('data/' + i[1]+'.mp3', 'wb') as f:
+            with open('data/' + i[1] + '.mp3', 'wb') as f:
                 f.write(requests.get(download_url, headers=headers).content)
         except FileNotFoundError:
             pass
