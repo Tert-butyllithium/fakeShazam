@@ -37,5 +37,4 @@ if __name__ == '__main__':
     if not os.path.exists(META_DIR):
         os.mkdir(META_DIR)
         init()
-    else:
-        print('Done!')
+    print('Done!')

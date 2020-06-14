@@ -3,8 +3,6 @@ from typing import *
 from hashlib import sha256
 from pydub import AudioSegment
 import numpy as np
-import pydub
-import itertools
 
 # import from project
 import fingerprint
@@ -32,7 +30,7 @@ def get_framerate_and_channels(filepath):
             channels.append(data[channel::music_file.channels])
         # print(music_file.frame_rate)
         return music_file.frame_rate, channels
-    except pydub.exceptions.CouldntDecodeError:
+    except:
         return 0, []
 
 
